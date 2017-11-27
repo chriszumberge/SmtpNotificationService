@@ -12,7 +12,7 @@ namespace SmtpNotificationService.WebApi.Tests.Controllers
         {
             MailController controller = new MailController();
 
-            var recipientAddress = "christopher_zumberge@compaid.com";
+            var recipientAddress = "chriszumberge@gmail.com";
             var subject = "Test Controller";
             var body = "Testing the Mail Controller";
             var recipientDisplayName = "Christopher Zumberge";

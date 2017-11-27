@@ -7,7 +7,7 @@ using System.Web;
 
 namespace SmtpNotificationService.WebApi.Services
 {
-    public class MessageService
+    internal class MessageService
     {
         Dictionary<string, DateTime> _expirationDict = new Dictionary<string, DateTime>();
         Dictionary<string, MessageDraft> _messageDict = new Dictionary<string, MessageDraft>();
@@ -15,7 +15,7 @@ namespace SmtpNotificationService.WebApi.Services
         readonly uint _expirationSeconds;
         readonly SmtpClient _client;
 
-        public MessageService(SmtpClient client, uint expirationSeconds)
+        internal MessageService(SmtpClient client, uint expirationSeconds)
         {
             _client = client;
             _expirationSeconds = expirationSeconds;
@@ -38,7 +38,7 @@ namespace SmtpNotificationService.WebApi.Services
             }
         }
 
-        public string CreateNewMessage()
+        internal string CreateNewMessage()
         {
             CleanUp();
 
@@ -50,22 +50,53 @@ namespace SmtpNotificationService.WebApi.Services
             return key;
         }
 
-        public void SetRecipient(string key, string recipientAddress, string recipientDislayName)
+        internal void SetRecipient(string key, string recipientAddress, string recipientDislayName)
         {
             MessageDraft message = _messageDict[key];
             message.RecipientAddress = recipientAddress;
             message.RecipientDisplayName = recipientDislayName;
         }
 
-        public void AddAttachment()
+        internal void AddAttachment()
         {
             throw new NotImplementedException();
         }
 
-        public void CancelMessage(string key)
+        internal void CancelMessage(string key)
         {
             _expirationDict.Remove(key);
             _messageDict.Remove(key);
+        }
+
+        internal void KeepAlive(string key, uint additionalExpirationSeconds) => _expirationDict[key].AddSeconds(additionalExpirationSeconds);
+
+        internal DateTime GetExpiration(string key) => _expirationDict[key];
+
+        internal uint GetSecondsUntilExpiration(string key) => (uint)(Math.Round((DateTime.Now - _expirationDict[key]).TotalSeconds));
+
+        internal void SetSender(string key, string fromAddress, string fromDisplayName)
+        {
+            MessageDraft message = _messageDict[key];
+            message.SenderAddress = fromAddress;
+            message.SenderDisplayName = fromDisplayName;
+        }
+
+        internal void SetSender(string key, string fromDisplayName)
+        {
+            MessageDraft message = _messageDict[key];
+            message.SenderDisplayName = fromDisplayName;
+        }
+
+        internal void SetSubject(string key, string subject)
+        {
+            MessageDraft message = _messageDict[key];
+            message.Subject = subject;
+        }
+
+        internal void SetBody(string key, string body)
+        {
+            MessageDraft message = _messageDict[key];
+            message.Body = body;
         }
 
         public async void SendMessage(string key)
@@ -81,7 +112,7 @@ namespace SmtpNotificationService.WebApi.Services
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
         }
     }

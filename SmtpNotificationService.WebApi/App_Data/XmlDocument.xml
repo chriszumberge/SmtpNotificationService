@@ -496,6 +496,68 @@
             <param name="body">The body content of the email.</param>
             <param name="recipientDisplayName">The optionally included name to show in place of the recipient email address.</param>
             <param name="senderDisplayName">The optionally included name to show in place of the sender email address.</param>
+            <returns></returns>
+        </member>
+        <member name="T:SmtpNotificationService.WebApi.Controllers.MessageController">
+            <summary>
+            The Message Controller is to allow users to incrementally build mail messages, interacting with a persisting object using a message key.
+            </summary>
+            <seealso cref="T:System.Web.Http.ApiController" />
+        </member>
+        <member name="M:SmtpNotificationService.WebApi.Controllers.MessageController.NewMessage">
+            <summary>
+            Creates a new message with the message service and returns the id required for interacting with it.
+            </summary>
+            <returns>
+            Token with message key and number of seconds until the message expires on the server.
+            </returns>
+        </member>
+        <member name="M:SmtpNotificationService.WebApi.Controllers.MessageController.To(System.String,System.String,System.String)">
+            <summary>
+            Sets the recipient parameters of the message.
+            </summary>
+            <param name="key">The message's key.</param>
+            <param name="toAddress">Recipient's mail address.</param>
+            <param name="toDisplayName">Optional name to display for the recipient.</param>
+            <returns>Http Action Result indicating if successful or not.</returns>
+        </member>
+        <member name="M:SmtpNotificationService.WebApi.Controllers.MessageController.From(System.String,System.String)">
+            <summary>
+            Sets the sender parameters of the message.
+            </summary>
+            <param name="key">The message's key.</param>
+            <param name="fromDisplayName">Optional name to display for the sender.</param>
+            <returns>Http Action Result indicating if successful or not.</returns>
+        </member>
+        <member name="M:SmtpNotificationService.WebApi.Controllers.MessageController.Subject(System.String,System.String)">
+            <summary>
+            Sets the subject parameter of the message.
+            </summary>
+            <param name="key">The message's key.</param>
+            <param name="subject">The subject to set.</param>
+            <returns>Http Action Result indicating if successful or not.</returns>
+        </member>
+        <member name="M:SmtpNotificationService.WebApi.Controllers.MessageController.Body(System.String,System.String)">
+            <summary>
+            Sets the body parameter of the message.
+            </summary>
+            <param name="key">The message's key.</param>
+            <param name="body">The body to set.</param>
+            <returns>Http Action Result indicating if successful or not.</returns>
+        </member>
+        <member name="M:SmtpNotificationService.WebApi.Controllers.MessageController.AddAttachment(System.String)">
+            <summary>
+            Adds an attachment to the message
+            </summary>
+            <param name="key">The message's key.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SmtpNotificationService.WebApi.Controllers.MessageController.Send(System.String)">
+            <summary>
+            Sends the message with the specified key.
+            </summary>
+            <param name="key">The message's key.</param>
+            <returns>Http Action Result indicating if the send is successful or not.</returns>
         </member>
     </members>
 </doc>
